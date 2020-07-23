@@ -27,3 +27,5 @@
   ```
 
 - 使用 require: `window.require(...)` 这里 require 被绑定在 window 上
+
+- 图片存储: 选择电脑上的图片后将图片转为 `base64` 数据, 通过 `websql` 存储
