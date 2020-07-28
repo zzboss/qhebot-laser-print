@@ -1,7 +1,7 @@
 <template>
   <div class="img-table">
     <div @click="addImg">
-      <img src="@/assets/add_image.png" alt="add a image" />
+      <img src="@/assets/add_image.png" alt="add a image" title="添加图片" />
     </div>
     <div
       v-for="(img, index) in imgList"
@@ -129,14 +129,13 @@ export default {
 
 <style lang="less" scoped>
 .img-table {
-  flex: 1;
   overflow-y: auto;
-  border: solid 1px #bbb;
-  display: grid;
-  justify-content: space-evenly;
-  grid-template-columns: repeat(auto-fill, 5rem);
-  row-gap: 6px;
+  display: flex;
+  align-content: flex-start;
+  flex-wrap: wrap;
   div {
+    width: 5rem;
+    margin: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
