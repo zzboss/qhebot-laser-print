@@ -24,18 +24,18 @@ export default {
     };
   },
   mounted() {
-    this.initData(() => {
-      this.$dbUtil.queryAllImgs((tx, res) => {
-        console.log("res:", res.rows);
+    this.initData() // 如果首次加载需要初始化数据
+      .then(() => this.$dbUtil.queryAllImgs()) // 查询所有图片
+      .then(res => {
+        // 如果有数据选中最后一张
         for (let i = 0; i < res.rows.length; i++) {
           this.imgList.push(res.rows.item(i));
         }
-        this.imgList.reverse();
         if (this.imgList && this.imgList.length > 0) {
+          this.imgList.reverse();
           this.$emit("selectImg", this.imgList[0].data_url);
         }
       });
-    });
   },
   methods: {
     /**
@@ -60,7 +60,7 @@ export default {
           click() {
             const img = that.imgList.find(item => item.id === imgId);
             const index = that.imgList.indexOf(img);
-            that.$dbUtil.deleteImg(imgId, () => {
+            that.$dbUtil.deleteImg(imgId).then(() => {
               that.imgList.splice(index, 1);
               if (that.imgList && that.imgList.length > 0) {
                 that.$emit("selectImg", that.imgList[0].data_url);
@@ -100,28 +100,31 @@ export default {
       const bData = fs.readFileSync(path);
       const imgData = `data:image/png;base64,${bData.toString("base64")}`;
       this.$emit("selectImg", imgData);
-      this.$dbUtil.insertImg(imgData, (tx, res) => {
-        this.imgList.unshift({ id: res.insertId, data_url: imgData });
-      });
+      this.$dbUtil
+        .insertImg(imgData)
+        .then(res =>
+          this.imgList.unshift({ id: res.insertId, data_url: imgData })
+        );
     },
     /**
      * 初始化数据
      */
-    initData(callback) {
-      this.$dbUtil.excute(
-        "CREATE TABLE IF NOT EXISTS init (id unique)",
-        null,
-        () => {
-          this.$dbUtil.excute("select * from init", null, (tx, res) => {
-            if (res.rows.length === 0) {
-              this.$dbUtil.initImg(callback);
-              this.$dbUtil.excute("insert into init(id) values(1)");
-            } else {
-              callback();
-            }
-          });
-        }
-      );
+    initData() {
+      return this.$dbUtil
+        .excuteSql("drop table if exists init")
+        .then(() =>
+          this.$dbUtil.excuteSql("CREATE TABLE IF NOT EXISTS init (id unique)")
+        )
+        .then(() => this.$dbUtil.excuteSql("select * from init"))
+        .then(res => {
+          if (res.rows.length === 0) {
+            this.$dbUtil.initImg();
+            this.$dbUtil.excuteSql("insert into init(id) values(1)");
+          }
+        })
+        .catch(reason => {
+          console.log("error log:", reason);
+        });
     }
   }
 };
