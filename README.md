@@ -30,6 +30,85 @@
 
 - 图片存储: 选择电脑上的图片后将图片转为 `base64` 数据, 通过 `websql` 存储
 
+  - websql api 封装
+
+    - 原生 websql 基础操作代码
+
+    ```javascript
+    function executeSql(sql, params, onResolved, onRejected) {
+      db.transaction(tx => {
+        tx.executeSql(sql, params, onResolved, onRejected);
+      });
+    }
+    ```
+
+    - websql api 是异步函数, 想要在获取数据后做处理需要使用大量回调来控制函数的顺序执行, 如下
+
+    ```javascript
+    function foo(param, dataHandler, errorHandler) {
+      db.executeSql(
+        "sql_01",
+        param,
+        res1 =>
+          db.executeSql(
+            "sql_02",
+            res1,
+            res2 => db.executeSql("sql_03", res2, dataHandler, errorHandler),
+            errorHandler
+          ),
+        errorHandler
+      );
+    }
+    ```
+
+    - websql 基础操作封装代码
+
+    ```javascript
+    function executeSql(sql, params) {
+      return new Promise((resolve, reject) => {
+        db.transaction(tx => {
+          tx.executeSql(
+            sql,
+            params,
+            (tx, value) => resolve(value),
+            (tx, reason) => reject(reason)
+          );
+        });
+      });
+    }
+    ```
+
+    - 通过 Promise 封装基本的 sql 执行, 返回一个 Promise , 使得数据库操作类似以下代码
+
+    ```javascript
+    function foo(param, dataHandler, errorHandler) {
+      db.executeSql("sql_01", param)
+        .then(res1 => db.executeSql("sql_02", res1))
+        .then(res2 => db.executeSql("sql_03", res2))
+        .then(dataHandler)
+        .catch(errorHandler);
+    }
+    ```
+
+    - 使用 Promise 封装后同样可以使用 `async` , `await` 优化链式操作
+
+    ```javascript
+    async function foo(param, dataHandler, errorHandler) {
+      try {
+        const res1 = await db.executeSql("sql_01", param);
+        const res2 = await db.executeSql("sql_02", res2);
+        const res3 = await db.executeSql("sql_03", res3);
+        dataHandler(res3);
+      } catch (error) {
+        errorHandler(error);
+      }
+    }
+    ```
+
+  - 使用方式
+    - 基础的执行器类已封装, `new DBExcutor(databaseParam)` 可以创建执行器, 在构造函数中已经做了打开数据库的操作
+    - dbUtil 同样已封装好, 并在 main.js 中设置在 Vue 原型上, 调用时使用 `this.$dbUtil.xxx()` 即可
+
 - 图片灰化：通过拿到图片数据数组(`[r,g,b,a,r,g,b,a...]`), 每个 `r,g,b,a` 代表一个像素点, 将 rgb 取平局值即可获取到灰色图片
 
 - 图片黑白化: 将图片灰化后, 取一个中间值, 大于中间值的赋值为 255，其余为 0

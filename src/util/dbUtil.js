@@ -1,5 +1,5 @@
-import DBExcutor from "./DBExcutor";
-const dbExcutor = new DBExcutor({
+import DBExcutor from "./DBExecutor";
+const dbExecutor = new DBExcutor({
   dbName: "imgDb",
   version: "1.0.0",
   description: "save image for select",
@@ -14,7 +14,7 @@ const dbUtil = {
    * @returns Promise 插入结果
    */
   insertImg(dataUrl) {
-    return this.excuteSql(
+    return this.executeSql(
       `INSERT INTO ${this.imgDataTableName} (data_url) values (?)`,
       [dataUrl]
     );
@@ -24,7 +24,7 @@ const dbUtil = {
    * @returns Promise 图片数据库表创建结果
    */
   createImgDb() {
-    return this.excuteSql(
+    return this.executeSql(
       `CREATE TABLE IF NOT EXISTS ${this.imgDataTableName} (id integer primary key autoincrement, data_url)`
     );
   },
@@ -33,20 +33,21 @@ const dbUtil = {
    * @param {String} id 图片id
    */
   deleteImg(id) {
-    return this.excuteSql(`DELETE FROM ${this.imgDataTableName} WHERE id = ?`, [
-      id
-    ]);
+    return this.executeSql(
+      `DELETE FROM ${this.imgDataTableName} WHERE id = ?`,
+      [id]
+    );
   },
   /**
    * sql 执行函数
    */
-  excuteSql: (sql, params) => dbExcutor.excuteSql(sql, params),
+  executeSql: (sql, params) => dbExecutor.executeSql(sql, params),
   /**
    * 查询所有图片数据
    * @return Promise 全部的图片数据
    */
   queryAllImgs() {
-    return this.excuteSql(`select * from ${this.imgDataTableName}`);
+    return this.executeSql(`select * from ${this.imgDataTableName}`);
   },
   /**
    * 初始化图数据库表

@@ -21,7 +21,7 @@ export default class DBExcutor {
    * @param {*} params 执行参数
    * @returns Promise 执行结果
    */
-  excuteSql(sql, params) {
+  executeSql(sql, params) {
     return new Promise((resolve, reject) => {
       this.db.transaction(tx => {
         tx.executeSql(

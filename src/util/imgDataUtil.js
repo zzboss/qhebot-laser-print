@@ -4,6 +4,12 @@
  * @author zzboss 2020.07.23
  */
 const imgDataUtil = {
+  /**
+   *
+   * @param {Array} data 图片数据
+   * @param {Function} dataProcessor 数据处理器
+   * @param {Object} param 数据处理过程需要的参数
+   */
   transformImgData(data, dataProcessor, param) {
     for (let i = 0; i < data.length; i += 4) {
       let grayVal = dataProcessor(data, i, param);
@@ -13,7 +19,7 @@ const imgDataUtil = {
     }
   },
   /**
-   * 将图片灰化
+   * 将图片灰化(r, g, b 取均值即可)
    * @param {Array} data 图片数据
    */
   grayImg(data) {
@@ -23,7 +29,7 @@ const imgDataUtil = {
     );
   },
   /**
-   * 将图片黑白化
+   * 将图片黑白化 (r, g, b 取均值后通过传入的中间值判断当前点是黑还是白)
    * @param {Array} data 图片数据
    * @param {Number} mediumVal 黑白化中间值(0~255)
    */
@@ -93,7 +99,7 @@ const imgDataUtil = {
     );
   },
   /**
-   * 判断黑色图片相邻点色值是否相似
+   * 判断灰色图片相邻点色值是否相似
    * @param {Array} data 图片数据
    * @param {Number} position 像素点位置
    * @param {Number} w 图宽

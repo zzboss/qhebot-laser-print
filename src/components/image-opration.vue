@@ -1,7 +1,7 @@
 <template>
   <div class="img-opration">
     <div class="opration-item">
-      <span class="opration-label">处理模式:</span>
+      <span class="opration-label" ref="test">处理模式:</span>
       <div class="opration-content mode-selector">
         <el-select v-model="mode" placeholder="请选择" @change="changeMode">
           <el-option

@@ -97,8 +97,13 @@ export default {
      */
     saveImgToLocal(path) {
       const fs = window.require("fs");
+      const typeIndex = path.lastIndexOf(".") + 1;
+      const fileType = path.substring(typeIndex);
       const bData = fs.readFileSync(path);
-      const imgData = `data:image/png;base64,${bData.toString("base64")}`;
+      console.log(fileType);
+      const imgData = `data:image/${fileType};base64,${bData.toString(
+        "base64"
+      )}`;
       this.$emit("selectImg", imgData);
       this.$dbUtil
         .insertImg(imgData)
@@ -111,15 +116,12 @@ export default {
      */
     initData() {
       return this.$dbUtil
-        .excuteSql("drop table if exists init")
-        .then(() =>
-          this.$dbUtil.excuteSql("CREATE TABLE IF NOT EXISTS init (id unique)")
-        )
-        .then(() => this.$dbUtil.excuteSql("select * from init"))
+        .executeSql("CREATE TABLE IF NOT EXISTS init (id unique)")
+        .then(() => this.$dbUtil.executeSql("select * from init"))
         .then(res => {
           if (res.rows.length === 0) {
             this.$dbUtil.initImg();
-            this.$dbUtil.excuteSql("insert into init(id) values(1)");
+            this.$dbUtil.executeSql("insert into init(id) values(1)");
           }
         })
         .catch(reason => {

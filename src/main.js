@@ -3,7 +3,7 @@ import App from "./App.vue";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 
-import dbUtil from "@/util/dbUtils";
+import dbUtil from "@/util/dbUtil";
 
 Vue.config.productionTip = false;
 
