@@ -27,6 +27,9 @@
         />
       </div>
     </div>
+    <div class="opration-item">
+      <el-button type="primary" @click="download">图片下载</el-button>
+    </div>
   </div>
 </template>
 <script>
@@ -60,6 +63,9 @@ export default {
   methods: {
     changeMode() {
       this.$emit("changeMode", this.mode);
+    },
+    download() {
+      this.$emit("download");
     }
   },
   computed: {

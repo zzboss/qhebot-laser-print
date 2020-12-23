@@ -19,6 +19,7 @@
         class="img-opration-stage"
         @changeGray="changeGray"
         @changeMode="changeMode"
+        @download="dowmloadImg"
         :grayValue="grayValue"
       />
     </main>
@@ -161,6 +162,11 @@ export default {
         ctx.putImageData(imageData, 0, 0);
         this.currentPath = canvas.toDataURL();
       };
+    },
+    dowmloadImg() {
+      if (this.currentPath) {
+        imgDataUtil.downloadImg(this.currentPath);
+      }
     }
   }
 };

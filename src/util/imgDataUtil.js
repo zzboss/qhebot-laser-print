@@ -149,10 +149,10 @@ const imgDataUtil = {
   eqColor: (data, a, b) => data[a * 4] === data[b * 4],
   /**
    * 比较两个灰色点的色值是否相似(色值相差在一定范围内视为相似)
-   * @param {*} data 图片数据
-   * @param {*} a 点a
-   * @param {*} b 点b
-   * @param {*} similarVal 相似值范围
+   * @param {Array} data 图片数据
+   * @param {Number} a 点a
+   * @param {Number} b 点b
+   * @param {Number} similarVal 相似值范围
    */
   similarColor: (data, a, b, similarVal) =>
     Math.abs(data[a * 4] - data[b * 4]) < similarVal,
@@ -162,6 +162,17 @@ const imgDataUtil = {
   similarRgb: (data, a, b, similarVal) =>
     Math.abs(data[a * 4] - data[b * 4]) < similarVal &&
     Math.abs(data[a * 4 + 1] - data[b * 4 + 1]) < similarVal &&
-    Math.abs(data[a * 4 + 2] - data[b * 4 + 2]) < similarVal
+    Math.abs(data[a * 4 + 2] - data[b * 4 + 2]) < similarVal,
+
+  /**
+   * 图片下载
+   * @param {String} base64Url 图片base64编码
+   */
+  downloadImg: base64Url => {
+    let a = document.createElement("a");
+    a.href = base64Url;
+    a.download = new Date().getTime();
+    a.click();
+  }
 };
 export default imgDataUtil;
