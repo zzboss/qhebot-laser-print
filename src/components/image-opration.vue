@@ -83,9 +83,6 @@ export default {
 
 <style lang="less" scoped>
 .img-opration {
-  display: flex;
-  flex-direction: column;
-
   .opration-item {
     padding: 1rem;
     display: flex;
@@ -97,8 +94,8 @@ export default {
       padding-right: 1rem;
     }
     .opration-content {
-      flex: 1;
       margin-right: 1rem;
+      width: 30rem;
     }
     .mode-selector {
       display: flex;

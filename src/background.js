@@ -1,6 +1,6 @@
 "use strict";
 
-import { app, protocol, BrowserWindow } from "electron";
+import { app, protocol, BrowserWindow, Menu } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
 
@@ -88,3 +88,20 @@ if (isDevelopment) {
     });
   }
 }
+
+// 菜单设置
+
+// let dockMenu = Menu.buildFromTemplate([
+//   {
+//     label: "文件",
+//     click: function() {
+//       console.log("点击事件");
+//     }
+//   },
+//   {
+//     label: "编辑",
+//     submenu: [{ label: "保存" }, { label: "另存" }]
+//   },
+//   { label: "帮助" }
+// ]);
+// Menu.setApplicationMenu(dockMenu);

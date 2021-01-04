@@ -174,58 +174,48 @@ export default {
 
 <style lang="less" scoped>
 .img-stage {
-  width: 256px;
-  height: 256px;
-  margin: 5rem;
+  max-width: 90%;
+  max-height: 90%;
+  vertical-align: middle;
+  display: inline-block;
   border: solid 2px #ccc;
   box-shadow: #bbb 2px 2px 3px;
 }
 
 .container {
-  display: flex;
   width: 98vw;
   height: 95vh;
-  justify-content: flex-start;
-  align-items: flex-start;
   border: solid 1px #bbb;
+  overflow: auto;
+  display: flex;
 
   .area-select {
     flex: 1;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    border-right: solid 1px #bbb;
-    margin-right: -1px;
 
     .origin-image-container {
-      flex: 2;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       border-bottom: solid 1px #bbb;
+      height: 60vh;
+      line-height: 60vh;
+      text-align: center;
     }
     .img-select-stage {
-      flex: 1;
       margin: 0.5rem 0.5rem;
+      height: 35vh;
     }
   }
   .area-opration {
     flex: 2;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
     border-left: solid 1px #bbb;
 
     .current-img-container {
-      flex: 2;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       border-bottom: solid 1px #bbb;
+      height: 60vh;
+      line-height: 60vh;
+      text-align: center;
     }
     .img-opration-stage {
-      flex: 1;
       margin: 0.5rem 0.5rem;
+      height: 35vh;
     }
   }
 }

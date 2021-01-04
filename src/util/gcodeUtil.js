@@ -84,16 +84,15 @@ function parseGcode(gcode) {
   let res;
   let command = gcode.split(" ").filter(item => item)[0];
   switch (command) {
-    case "Z-1":
     case "Z0":
     case "Z1":
       res = command;
       break;
     case "M05":
-      res = "Z-1";
+      res = "Z1";
       break;
     case "M03":
-      res = "Z1";
+      res = "Z0";
       break;
     case "G0":
     case "G1":
